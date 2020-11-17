@@ -1,0 +1,4 @@
+# Don't push interview voice data, should remain anonymous
+/interviews
+
+/figures-local
