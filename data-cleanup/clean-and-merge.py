@@ -14,16 +14,17 @@ else:
 
 cleanedDataFrames = []
 
+
 def cleanTheData():
 
-    # Start with 0 as attempt number and just add 1 when saving to file to go from [0,1] -> [1,2]
+    # Start with 0 as attempt number and just add 1 when saving to file to, go from [0,1] -> [1,2]
     attempt_nr = 0
-
     print("Cleaning your data...", end=" ")
 
     # Add column with attempt nr
     for csv_file in all_files:
         df = pd.read_csv(csv_file)
+
         # Insert a new column at index 0 with the attempt number
         df.insert(0, "Attempt nr", attempt_nr + 1)
 
@@ -31,7 +32,7 @@ def cleanTheData():
         # There's a bug in the simulation when SoC goes below zero, I assume it's done and some values aren's stored anymore, such as speed.
         # Hence when the driver runs out of battery it's over, but in reality they might still be going down hill a bit etc.
         df.drop(df[df.currentStateOfCharge <= 0].index, inplace=True)
-        
+
         # Store our cleaned data frames in an array
         cleanedDataFrames.append(df)
 
@@ -41,7 +42,8 @@ def cleanTheData():
         attempt_nr = (attempt_nr + 1) % 2
 
     print(" OK")
-    
+
+
 def mergeCSVFilesToOne():
     print("Merging files...", end=" ")
     # Merge all the data into one single data frame
@@ -49,7 +51,7 @@ def mergeCSVFilesToOne():
     print(" OK")
 
     print("===Cleaned and merged files===")
-    [print(Fore.GREEN +  Style.BRIGHT + f + Style.RESET_ALL) for f in all_files]
+    [print(Fore.GREEN + Style.BRIGHT + f + Style.RESET_ALL) for f in all_files]
     print("==================")
     print("Saving to file...", end="", flush=True)
 
@@ -61,18 +63,25 @@ def mergeCSVFilesToOne():
 
     # Save the merged data into a new .csv file
     if platform == "linux":
-        df.to_csv('./merged-cleaned-csv/' + merged_file_name, index=False, encoding='utf-8-sig')
+        df.to_csv('./merged-cleaned-csv/' + merged_file_name,
+                  index=False, encoding='utf-8-sig')
     else:
-        df.to_csv('./merged-cleaned-csv/' + merged_file_name, index=False, encoding='utf-8-sig')
+        df.to_csv('./merged-cleaned-csv/' + merged_file_name,
+                  index=False, encoding='utf-8-sig')
     print(" OK")
-    
+
     if platform == "linux":
-        print("Path to file: " + Fore.YELLOW + Style.BRIGHT + os.path.abspath('./merged-cleaned-csv') + Style.RESET_ALL)
+        print("Path to file: " + Fore.YELLOW + Style.BRIGHT +
+              os.path.abspath('./merged-cleaned-csv') + Style.RESET_ALL)
     else:
-        print("Path to file: " + Fore.YELLOW + Style.BRIGHT + os.path.abspath('.\\merged-cleaned-csv') + Style.RESET_ALL)
-    
-    print("New file: " + Fore.GREEN + Style.BRIGHT + merged_file_name + Style.RESET_ALL)
-    print(Fore.CYAN + Style.BRIGHT + "Thank you for using our cleaning and merging services!" + Style.RESET_ALL)
+        print("Path to file: " + Fore.YELLOW + Style.BRIGHT +
+              os.path.abspath('.\\merged-cleaned-csv') + Style.RESET_ALL)
+
+    print("New file: " + Fore.GREEN + Style.BRIGHT +
+          merged_file_name + Style.RESET_ALL)
+    print(Fore.CYAN + Style.BRIGHT +
+          "Thank you for using our cleaning and merging services!" + Style.RESET_ALL)
+
 
 cleanTheData()
 mergeCSVFilesToOne()
