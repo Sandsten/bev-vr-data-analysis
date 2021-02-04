@@ -10,10 +10,11 @@ platform = sys.platform
 if platform == "linux":
     all_files = sorted(glob.glob('../raw-data/*.csv'))
 else:
-    all_files = sotred(glob.glob('..\\raw-data\\*.csv'))
+    all_files = sorted(glob.glob('..\\raw-data\\*.csv'))
 
 cleanedDataFrames = []
 
+#print(all_files)
 
 def cleanTheData():
 
