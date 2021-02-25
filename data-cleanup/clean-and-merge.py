@@ -33,6 +33,23 @@ def cleanTheData():
         # There's a bug in the simulation when SoC goes below zero, I assume it's done and some values aren's stored anymore, such as speed.
         # Hence when the driver runs out of battery it's over, but in reality they might still be going down hill a bit etc.
         df.drop(df[df.currentStateOfCharge <= 0].index, inplace=True)
+        
+        # Give the columns clearer names
+        df = df.rename(columns={
+            "Attempt nr":"attempt", 
+            "userID": "user_id", 
+            "evisID":"evis_id", 
+            "timeStamp":"timestamp", 
+            "currentStateOfCharge":"current_soc", 
+            "energyConsumed":"energy_consumed", 
+            "energyUsage":"power_usage",
+            "guesstimatedDistanceLeft":"range_estimate",
+            "distanceTraveled":"distance_traveled", 
+            "throttlePosition":"throttle_position", 
+            "breakPosition":"break_position", 
+            "steeringWheelRot":"wheel_rot", 
+            "yPosition":"road_elevation"
+        })
 
         # Store our cleaned data frames in an array
         cleanedDataFrames.append(df)
@@ -41,6 +58,8 @@ def cleanTheData():
         # All the attempts have to be ordered and always in pairs, otherwise this won't work.
         # This is the default order if left alone
         attempt_nr = (attempt_nr + 1) % 2
+
+
 
     print(" OK")
 
@@ -56,8 +75,8 @@ def mergeCSVFilesToOne():
     print("==================")
     print("Saving to file...", end="", flush=True)
 
-    first_id = df.iloc[0].userID
-    last_id = df.iloc[-1].userID
+    first_id = df.iloc[0].user_id
+    last_id = df.iloc[-1].user_id
 
     merged_file_name = "driving_data_merged_" + \
         str(first_id) + "_to_" + str(last_id) + ".csv"
