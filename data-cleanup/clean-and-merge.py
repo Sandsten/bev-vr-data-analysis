@@ -14,8 +14,6 @@ else:
 
 cleanedDataFrames = []
 
-#print(all_files)
-
 def cleanTheData():
 
     # Start with 0 as attempt number and just add 1 when saving to file to, go from [0,1] -> [1,2]
@@ -50,6 +48,13 @@ def cleanTheData():
             "steeringWheelRot":"wheel_rot", 
             "yPosition":"road_elevation"
         })
+
+        # Give clearer names to each evis id
+        df["evis_id"] = df["evis_id"].replace({
+            "DiffAndCOPE1": "diff_and_cope1",
+            "GuessOMeter": "guess_o_meter",
+            "ControlGroup": "control_group"
+            })
 
         # Store our cleaned data frames in an array
         cleanedDataFrames.append(df)
